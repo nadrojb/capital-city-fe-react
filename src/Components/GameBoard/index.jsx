@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Header } from "../Header";
+import { FormInput } from "../FormInput";
 
 function GameBoard() {
   const [countriesData, setCountriesData] = useState([]);
@@ -9,7 +10,9 @@ function GameBoard() {
   const [optionTwoCountry, setOptionTwoCountry] = useState(null);
   const [optionTwoCapital, setOptionTwoCapital] = useState(null);
   const [optionThreeCountry, setOptionThreeCountry] = useState(null);
-  const [optionThreeCapital, setOptionThreeCapital] = useState(null);
+  const [optionThreeCapital, setOptionThreeCapital] = useState("");
+  const [result, setResult] = useState("");
+  const [modalState, setModalState] = useState(false);
 
   async function getAllCountries() {
     const response = await fetch("http://127.0.0.1:8001/api/countries");
@@ -39,13 +42,6 @@ function GameBoard() {
       setOptionTwoCapital(option2.capital);
       setOptionThreeCountry(option3.name);
       setOptionThreeCapital(option3.capital);
-
-      console.log(option1.name);
-      console.log(option1.capital);
-      console.log(option2.name);
-      console.log(option2.capital);
-      console.log(option3.name);
-      console.log(option3.capital);
     }
   }, [countriesData]);
 
@@ -53,47 +49,63 @@ function GameBoard() {
     e.preventDefault();
     const userChoice = e.target.elements.capital.value;
     if (userChoice == answer) {
-      console.log("winner");
+      setResult("Correct");
+      setModalState(true);
+    } else {
+      setResult(`Incorrect the correct answer is: ${optionOneCapital}`);
+      setModalState(true);
     }
+  }
+
+  function resetGame() {
+    setResult("");  
+    setModalState(false);  
+    getAllCountries();  
   }
 
   return (
     <>
-      <Header country={optionOneCountry} />
-      <div>
-        <h2>Choose your answer</h2>
-        <form onSubmit={handleSubmit} action="" method="GET">
-          <label>
-            <input
-              type="radio"
-              name="capital"
-              id="option1"
-              value={optionOneCountry}
-            />
-            {optionOneCapital}
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="capital"
-              id="option2"
-              value={optionTwoCapital}
-            />
-            {optionTwoCapital}
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="capital"
-              id="option3"
-              value={optionThreeCapital}
-            />
-            {optionThreeCapital}
-          </label>
-          <div>
-            <input type="submit" className="cursor-pointer" />
+      <div className="text-center mt-40 px-4">
+        <Header country={optionOneCountry} />
+        <div>
+          <h2 className="mt-4 text-white">Select your answer:</h2>
+          <form onSubmit={handleSubmit} action="" method="GET">
+            <div className="text-center mt-4">
+              <FormInput
+                id={optionOneCountry}
+                value={optionOneCountry}
+                labelValue={optionOneCapital}
+              />
+              <FormInput
+                id={optionTwoCountry}
+                value={optionTwoCapital}
+                labelValue={optionTwoCapital}
+              />
+              <FormInput
+                id={optionThreeCountry}
+                value={optionThreeCapital}
+                labelValue={optionThreeCapital}
+              />
+            </div>
+            <div>
+              <input
+                type="submit"
+                className="cursor-pointer bg-green-500 w-24 h-8 font-semibold rounded-md mt-4"
+              />
+            </div>
+          </form>
+        </div>
+        {modalState ? (
+          <div className="bg-white w-11/12 sm:w-6/12 absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 h-3/4 rounded-md">
+            <h1 className="mt-24 text-3xl font-semibold"> {result}</h1>
+            <button onClick={resetGame} className="cursor-pointer bg-green-500 w-24 h-8 font-semibold rounded-md mt-4">Restart</button>
           </div>
-        </form>
+        ) : (
+          <div className="bg-white w-11/12 sm:w-6/12 absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 h-3/4 rounded-md hidden">
+            <h1 className="mt-24 text-3xl font-semibold" >{result}</h1>
+            <button onClick={resetGame} className="cursor-pointer bg-green-500 w-24 h-8 font-semibold rounded-md mt-4">Restart</button>
+          </div>
+        )}
       </div>
     </>
   );
