@@ -14,11 +14,17 @@ function GameBoard() {
   const [optionThreeCapital, setOptionThreeCapital] = useState("");
   const [result, setResult] = useState("");
   const [modalState, setModalState] = useState(false);
+  const [error, setError] = useState("");
 
   async function getAllCountries() {
-    const response = await fetch(countriesURL);
-    const data = await response.json();
-    setCountriesData(data.data);
+    try {
+      const response = await fetch(countriesURL);
+      const data = await response.json();
+      setCountriesData(data.data);
+      setError('');
+    } catch (e) {
+      setError("Unable to retrieve data");
+    }
   }
 
   function getRandomCountry(countriesData) {
@@ -59,13 +65,18 @@ function GameBoard() {
   }
 
   function resetGame() {
-    setResult("");  
-    setModalState(false);  
-    getAllCountries();  
+    setResult("");
+    setModalState(false);
+    getAllCountries();
   }
 
   return (
     <>
+      {error && (
+        <div className="text-center mt-5 text-red-600 font-semibold text-3xl">
+          <h1>Error: {error}</h1>
+        </div>
+      )}
       <div className="text-center mt-40 px-4">
         <Header country={optionOneCountry} />
         <div>
@@ -99,12 +110,22 @@ function GameBoard() {
         {modalState ? (
           <div className="bg-white w-11/12 sm:w-6/12 absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 h-3/4 rounded-md">
             <h1 className="mt-24 text-3xl font-semibold"> {result}</h1>
-            <button onClick={resetGame} className="cursor-pointer bg-green-500 w-24 h-9 font-semibold rounded-md mt-4">Restart</button>
+            <button
+              onClick={resetGame}
+              className="cursor-pointer bg-green-500 w-24 h-9 font-semibold rounded-md mt-4"
+            >
+              Restart
+            </button>
           </div>
         ) : (
           <div className="bg-white w-11/12 sm:w-6/12 absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 h-3/4 rounded-md hidden">
-            <h1 className="mt-24 text-3xl font-semibold" >{result}</h1>
-            <button onClick={resetGame} className="cursor-pointer bg-green-500 w-24 h-9 font-semibold rounded-md mt-4">Restart</button>
+            <h1 className="mt-24 text-3xl font-semibold">{result}</h1>
+            <button
+              onClick={resetGame}
+              className="cursor-pointer bg-green-500 w-24 h-9 font-semibold rounded-md mt-4"
+            >
+              Restart
+            </button>
           </div>
         )}
       </div>
