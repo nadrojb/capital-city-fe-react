@@ -1,6 +1,6 @@
 # Frontend for capital city quiz
 
-This application is designed to work with this API: https://github.com/nadrojb/capital-city-be-laravel
+This application is designed to work with this API: https://github.com/nadrojb/capital-city-api-laravel
 
 ## Local Set-up
 
