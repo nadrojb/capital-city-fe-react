@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Header } from "../Header";
 import { FormInput } from "../FormInput";
+import { countriesURL } from "../../config";
 
 function GameBoard() {
   const [countriesData, setCountriesData] = useState([]);
@@ -15,7 +16,7 @@ function GameBoard() {
   const [modalState, setModalState] = useState(false);
 
   async function getAllCountries() {
-    const response = await fetch("http://127.0.0.1:8001/api/countries");
+    const response = await fetch(countriesURL);
     const data = await response.json();
     setCountriesData(data.data);
   }
@@ -49,10 +50,10 @@ function GameBoard() {
     e.preventDefault();
     const userChoice = e.target.elements.capital.value;
     if (userChoice == answer) {
-      setResult("Correct");
+      setResult("Correct!");
       setModalState(true);
     } else {
-      setResult(`Incorrect the correct answer is: ${optionOneCapital}`);
+      setResult(`Incorrect! the correct answer is: ${optionOneCapital}`);
       setModalState(true);
     }
   }
@@ -70,7 +71,7 @@ function GameBoard() {
         <div>
           <h2 className="mt-4 text-white">Select your answer:</h2>
           <form onSubmit={handleSubmit} action="" method="GET">
-            <div className="text-center mt-4">
+            <div className="text-center mt-4 sm:w-5/12 mx-auto">
               <FormInput
                 id={optionOneCountry}
                 value={optionOneCountry}
@@ -90,7 +91,7 @@ function GameBoard() {
             <div>
               <input
                 type="submit"
-                className="cursor-pointer bg-green-500 w-24 h-8 font-semibold rounded-md mt-4"
+                className="cursor-pointer bg-green-500 w-24 h-9 font-semibold rounded-md mt-4"
               />
             </div>
           </form>
@@ -98,12 +99,12 @@ function GameBoard() {
         {modalState ? (
           <div className="bg-white w-11/12 sm:w-6/12 absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 h-3/4 rounded-md">
             <h1 className="mt-24 text-3xl font-semibold"> {result}</h1>
-            <button onClick={resetGame} className="cursor-pointer bg-green-500 w-24 h-8 font-semibold rounded-md mt-4">Restart</button>
+            <button onClick={resetGame} className="cursor-pointer bg-green-500 w-24 h-9 font-semibold rounded-md mt-4">Restart</button>
           </div>
         ) : (
           <div className="bg-white w-11/12 sm:w-6/12 absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 h-3/4 rounded-md hidden">
             <h1 className="mt-24 text-3xl font-semibold" >{result}</h1>
-            <button onClick={resetGame} className="cursor-pointer bg-green-500 w-24 h-8 font-semibold rounded-md mt-4">Restart</button>
+            <button onClick={resetGame} className="cursor-pointer bg-green-500 w-24 h-9 font-semibold rounded-md mt-4">Restart</button>
           </div>
         )}
       </div>

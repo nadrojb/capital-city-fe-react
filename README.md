@@ -1,8 +1,10 @@
-# React + Vite
+# Frontend for capital city quiz
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This application is designed to work with this API: https://github.com/nadrojb/capital-city-be-laravel
 
-Currently, two official plugins are available:
+## Local Set-up
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Clone this repo
+2. Run `npm install` from the project root
+4. Edit `src/config.jsx`: amend `baseURL` with the url which you have the API running locally on
+5. Run `npm run dev`
