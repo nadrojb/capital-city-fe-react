@@ -23,7 +23,7 @@ function GameBoard() {
       setCountriesData(data.data);
       setError('');
     } catch (e) {
-      setError("Unable to retrieve data");
+      setError("Unable to connect to server and retrieve data");
     }
   }
 
